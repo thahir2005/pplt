@@ -8,3 +8,8 @@ class Settings:
     DEBUG = os.getenv("DEBUG", "False") == "True"
 
 settings = Settings()
+from datetime import timedelta
+
+SECRET_KEY = "CHANGE_ME_SUPER_SECRET"
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 30

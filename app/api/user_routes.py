@@ -1,3 +1,6 @@
+
+from typing import List, Optional
+from sqlalchemy import asc, desc
 from app.models.user import User
 from fastapi import Query
 from typing import List
@@ -11,25 +14,32 @@ from app.schemas.user import UserCreate, UserOut
 from app.services.user_service import create_user, get_users
 
 router = APIRouter(prefix="/users", tags=["Users"])
-
-@router.post("/", response_model=UserOut)
-def create_new_user(user: UserCreate, db: Session = Depends(get_db)):
-    return create_user(db, user)
+from fastapi import Query
+from typing import List, Optional
+from sqlalchemy import asc, desc
 
 @router.get("/", response_model=List[UserList])
 def list_users(
     limit: int = Query(10, ge=1, le=100),
     offset: int = Query(0, ge=0),
+    search: Optional[str] = Query(None, description="Search by email"),
+    sort: str = Query("asc", pattern="^(asc|desc)$"),
     db: Session = Depends(get_db),
 ):
-    users = (
-        db.query(User)
-        .offset(offset)
-        .limit(limit)
-        .all()
-    )
-    return users
+    query = db.query(User)
 
+    # 🔍 Search (case-insensitive)
+    if search:
+        query = query.filter(User.email.ilike(f"%{search}%"))
+
+    # 🔼🔽 Sorting
+    if sort == "desc":
+        query = query.order_by(desc(User.id))
+    else:
+        query = query.order_by(asc(User.id))
+
+    users = query.offset(offset).limit(limit).all()
+    return users
 @router.get("/me")
 def read_current_user(current_user=Depends(get_current_user)):
     return {

@@ -11,3 +11,13 @@ class UserOut(BaseModel):
     model_config = {
         "from_attributes": True
     }
+
+
+from typing import List
+
+class UserList(BaseModel):
+    id: int
+    email: str
+
+    class Config:
+        from_attributes = True

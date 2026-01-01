@@ -1,7 +1,11 @@
 from fastapi import FastAPI
+from app.core.config import settings
 
-app = FastAPI(title="PPLT API")
+app = FastAPI(title=settings.APP_NAME)
 
 @app.get("/")
 def root():
-    return {"status": "Day 2 structure ready"}
+    return {
+        "app": settings.APP_NAME,
+        "debug": settings.DEBUG
+    }

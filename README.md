@@ -6,3 +6,5 @@ Backend API built with FastAPI.
 ```bash
 source venv/bin/activate
 uvicorn app.main:app --reload
+## Progress
+- Day 5: User CRUD implemented

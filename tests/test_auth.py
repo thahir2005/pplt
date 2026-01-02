@@ -1,14 +1,17 @@
 from fastapi.testclient import TestClient
 from app.main import app
+import uuid
 
 client = TestClient(app)
 
 def test_signup_and_login_flow():
+    email = f"test-{uuid.uuid4()}@test.com"
+
     # signup
     res = client.post(
         "/users/",
         json={
-            "email": "test15@test.com",
+            "email": email,
             "password": "secret123"
         }
     )
@@ -18,7 +21,7 @@ def test_signup_and_login_flow():
     res = client.post(
         "/auth/login",
         data={
-            "username": "test15@test.com",
+            "username": email,
             "password": "secret123"
         }
     )

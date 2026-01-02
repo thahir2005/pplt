@@ -21,3 +21,10 @@ class UserList(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+from typing import Optional
+
+class UserUpdate(BaseModel):
+    email: Optional[str] = None
+    password: Optional[str] = None

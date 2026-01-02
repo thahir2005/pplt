@@ -3,8 +3,8 @@ from sqlalchemy.orm import sessionmaker, declarative_base
 from app.core.config import settings
 import os
 
-DATABASE_URL = os.getenv("DATABASE_URL")
 
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./test.db")
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
